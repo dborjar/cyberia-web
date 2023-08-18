@@ -6,38 +6,142 @@
   <title>Cyberia Club</title>
   <link rel="stylesheet" type="text/css" href="css/pico.min.css">
   <link rel="stylesheet" href="css/custom.css">
+  <link rel="icon" href="img/white-circle-solid-md.png" type="image/png">
+
+  <script src="https://xemantic.github.io/shader-web-background/dist/shader-web-background.min.js"></script>
+
+
+  <!--
+    The "feedback" shader will consume own output and render a circle on top.
+   -->
+  <script type="x-shader/x-fragment" id="feedback">
+    precision highp float;
+
+    uniform vec2      iResolution;
+    uniform float     iMinDimension;
+    uniform sampler2D iChannel0;
+
+    uniform float     iFeedbackFadeRate; // something slightly less than 1.0
+    uniform vec2      iCircleCenter;
+    uniform float     iCircleRadius;
+    uniform float     iCircleEdgeSmoothing;
+
+    void main() {
+      // Normalized coordinates in range 0..1
+      vec2 uv = gl_FragCoord.xy / iResolution;
+      // Normalized coordinates in range -1..1 on minimal axis
+      vec2 st = (gl_FragCoord.xy * 2. - iResolution) / iMinDimension;
+      vec3 previousColor = texture2D(iChannel0, uv).rgb;
+      previousColor *= iFeedbackFadeRate;
+      float dist = distance(iCircleCenter, st);
+      float shape = smoothstep(
+        iCircleRadius,
+        iCircleRadius - iCircleEdgeSmoothing,
+        dist
+      );
+      vec3 newColor = vec3(shape);
+      vec3 color = previousColor + newColor;
+      color = clamp(color, 0., 1.);
+      gl_FragColor = vec4(color, 1.0);
+    }
+  </script>
+
+  <!--
+    The "image" shader will just copy the "feedback" output to the canvas.
+   -->
+  <script type="x-shader/x-fragment" id="image">
+    precision highp float;
+
+    uniform vec2 iResolution;
+    uniform sampler2D iChannel0;
+
+    void main(){
+      gl_FragColor = texture2D(iChannel0, gl_FragCoord.xy / iResolution);
+    }
+  </script>
+
+  <!--
+    Now we need to calculate uniforms before each frame, and provide them to the shaders.
+   -->
+  <script>
+    var minDimension = 0;
+    var time = 0;
+
+    var circleCenterX = 0;
+    var circleCenterY = 0;
+
+    const feedbackFadeRate = .995;
+    const circleRadius = 1.;
+    const circleEdgeSmoothing = .1;
+
+    shaderWebBackground.shade({
+      onResize: (width, height) => {
+        minDimension = Math.min(width, height);
+      },
+      onBeforeFrame: () => {
+        time = performance.now() / 1000;
+        circleCenterX = Math.sin(time * .3);
+        circleCenterY = Math.cos(time * .5);
+      },
+      shaders: {
+        feedback: {
+          uniforms: {
+            iResolution:          (gl, loc, ctx) => gl.uniform2f(loc, ctx.width, ctx.height),
+            iMinDimension:        (gl, loc) => gl.uniform1f(loc, minDimension),
+            iFeedbackFadeRate:    (gl, loc) => gl.uniform1f(loc, feedbackFadeRate),
+            iCircleCenter:        (gl, loc) => gl.uniform2f(loc, circleCenterX, circleCenterY),
+            iCircleRadius:        (gl, loc) => gl.uniform1f(loc, circleRadius),
+            iCircleEdgeSmoothing: (gl, loc) => gl.uniform1f(loc, circleEdgeSmoothing),
+            iChannel0:            (gl, loc, ctx) => ctx.texture(loc, ctx.buffers.feedback)
+          }
+        },
+        image: {
+          uniforms: {
+            iResolution:   (gl, loc, ctx) => gl.uniform2f(loc, ctx.width, ctx.height),
+            iChannel0:     (gl, loc, ctx) => ctx.texture(loc, ctx.buffers.feedback)
+          }
+        }
+      }
+    });
+  </script>
 </head>
 
 <body>
-  <div class="container">
+  <br>
+  <section>
     <header>
-      <div>
-        <nav>
-          <ul><a href="#">SHOP</a></ul>
+        <nav class="container">
+          <ul><a href="#">ARTISTS</a></ul>
           <ul><a href="#">TICKETS</a></ul>
           <ul><a href="#">CALENDAR</a></ul>
           <ul><a href="#">FAQ</a></ul>
         </nav>
-      </div>
     </header>
+  </section>
+  <section>
     <main>
         <div class="container">
-            <h1><strong class="web-title">CYBERIA</strong></h1>
+            <h1><strong class="web-title">CLUB_CYBERIA</strong></h1>
         </div>
         <div class="container">
-          <h5 style="text-align: center;">Welcome to "Cyberia," the ultimate techno club experience of the future that defies the boundaries of reality and sound. As you step through the sleek, shimmering entrance, you're immediately enveloped in an electrifying atmosphere that transports you to an alternate dimension where technology and music merge in perfect harmony.
+          <h5 style="text-align: center;">Techno club experience that defies the boundaries of reality and sound. As you step through the sleek, shimmering entrance, you're immediately enveloped in an electrifying atmosphere that transports you to an alternate dimension where technology and music merge in perfect harmony.
             <br>
             <br>
-            The exterior of Cyberia is a masterpiece of architectural innovation, featuring an otherworldly facade that seems to shift and morph with every beat of the music. As you enter, you find yourself in an expansive foyer bathed in neon hues, illuminated pathways leading you deeper into the heart of the club. The air is charged with anticipation, and the sound of pulsating rhythms vibrates through your very core.
+            A masterpiece of architectural innovation, featuring an otherworldly facade that seems to shift and morph with every beat of the music. As you enter, you find yourself in an expansive foyer bathed in neon hues, illuminated pathways leading you deeper into the heart of the club. The air is charged with anticipation, and the sound of pulsating rhythms vibrates through your very core.
           </h5>
         </div>
     </main>
-  </div>
+  </section>
 
   <section>
     <div class="container">
+      <h1><strong>CALENDAR</strong></h1>
+  </div>
+  </section>
+
+  <section class="container">
       <details>
-        <summary>Somniac One</summary>
+        <summary>SOMNIAC ONE</summary>
         <aside>
           <ul>
             <li>
@@ -53,65 +157,68 @@
       </details>
 
       <details>
-        <summary>Safety Trance</summary>
+        <summary>SAFETY TRANCE</summary>
         <ul>
           <li>…</li>
           <li>…</li>
         </ul>
       </details>
       <details>
-        <summary>Perc</summary>
+        <summary>VARG</summary>
         <p>…</p>
       </details>
 
       <details>
-        <summary>Accordion 2</summary>
+        <summary>NINA KRAVIZ</summary>
         <ul>
           <li>…</li>
           <li>…</li>
         </ul>
       </details>
       <details>
-        <summary>Accordion 1</summary>
+        <summary>I HATE MODELS</summary>
         <p>…</p>
       </details>
 
       <details>
-        <summary>Accordion 2</summary>
+        <summary>HADONE</summary>
         <ul>
           <li>…</li>
           <li>…</li>
         </ul>
       </details>
       <details>
-        <summary>Accordion 1</summary>
+        <summary>VIPER DIVA</summary>
         <p>…</p>
       </details>
 
       <details>
-        <summary>Accordion 2</summary>
+        <summary>MAELSTROM</summary>
         <ul>
           <li>…</li>
           <li>…</li>
         </ul>
       </details>
       <details>
-        <summary>Accordion 1</summary>
+        <summary>CLOUDS</summary>
         <p>…</p>
       </details>
 
       <details>
-        <summary>Accordion 2</summary>
+        <summary>PARALLX</summary>
         <ul>
           <li>…</li>
           <li>…</li>
         </ul>
       </details>
-    </div>
   </section>
 
   <footer>
+    <p>2023 CLUB_CYBERIA</p>
   </footer>
-  <script src="artistCards.js"></script>
+
+  <canvas id="shader-web-background" style="width: 100vw; height: 100vh; position: fixed; top: 0px; left: 0px; z-index: -9999;" width="882" height="1340"></canvas>
+  <script src="js/artistCards.js"></script>
+  <script src="js/shaderWebBackground.min.js"></script>
 </body>
 </html>

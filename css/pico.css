@@ -426,12 +426,12 @@ kbd {
   --h6-color: #afbbc4;
   --muted-color: hsl(205, 10%, 50%);
   --muted-border-color: #1f2d38;
-  --primary: hsl(195, 85%, 41%);
-  --primary-hover: hsl(195, 80%, 50%);
+  --primary: hsl(0, 0%, 50%);
+  --primary-hover: hsl(0, 0%, 45%);
   --primary-focus: rgba(16, 149, 193, 0.25);
   --primary-inverse: #fff;
   --secondary: hsl(205, 15%, 41%);
-  --secondary-hover: hsl(205, 10%, 50%);
+  --secondary-hover: hsl(0, 0%, 100%);
   --secondary-focus: rgba(115, 130, 140, 0.25);
   --secondary-inverse: #fff;
   --contrast: hsl(205, 20%, 94%);

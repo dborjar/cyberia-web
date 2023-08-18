@@ -1,8 +1,62 @@
+/* styles.css */
+
+.shader-web-background-fallback {
+  /* background: url("https://placekitten.com/666/666"); */
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 .web-title {
   display: flex;
   justify-content: center;
   align-items: center;
   /* height: 200vh; */
-  font-size: 15vw;
-  opacity: 95%;
+  font-size: 10vw;
+  /* opacity: 95%; */
+  color: whitesmoke
+}
+
+footer {
+  background-color: #f4f4f4;
+  color: #333;
+  text-align: center;
+}
+
+/* Indigo Light scheme (Default) */
+/* Can be forced with data-theme="light" */
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  --primary: #3949ab;
+  --primary-hover: #303f9f;
+  --primary-focus: rgba(57, 73, 171, 0.125);
+  --primary-inverse: #FFF;
+}
+
+/* Indigo Dark scheme (Auto) */
+/* Automatically enabled if user has Dark mode enabled */
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --primary: hsl(0, 0%, 50%);
+    --primary-hover: #ffffff;
+    --primary-focus: rgba(149, 141, 141, 0.25);
+    --primary-inverse: #FFF;
+  }
+}
+
+/* Indigo Dark scheme (Forced) */
+/* Enabled if forced with data-theme="dark" */
+[data-theme="dark"] {
+  --primary: #3949ab;
+  --primary-hover: #3f51b5;
+  --primary-focus: rgba(57, 73, 171, 0.25);
+  --primary-inverse: #FFF;
+}
+
+/* Indigo (Common styles) */
+:root {
+  --form-element-active-border-color: var(--primary);
+  --form-element-focus-color: var(--primary-focus);
+  --switch-color: var(--primary-inverse);
+  --switch-checked-background-color: var(--primary);
 }
