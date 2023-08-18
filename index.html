@@ -3,17 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyberia Club</title>
+  <title>CLUB_CYBERIA</title>
   <link rel="stylesheet" type="text/css" href="css/pico.min.css">
   <link rel="stylesheet" href="css/custom.css">
   <link rel="icon" href="img/white-circle-solid-md.png" type="image/png">
 
   <script src="https://xemantic.github.io/shader-web-background/dist/shader-web-background.min.js"></script>
-
-
-  <!--
-    The "feedback" shader will consume own output and render a circle on top.
-   -->
   <script type="x-shader/x-fragment" id="feedback">
     precision highp float;
 
@@ -45,10 +40,6 @@
       gl_FragColor = vec4(color, 1.0);
     }
   </script>
-
-  <!--
-    The "image" shader will just copy the "feedback" output to the canvas.
-   -->
   <script type="x-shader/x-fragment" id="image">
     precision highp float;
 
@@ -59,10 +50,6 @@
       gl_FragColor = texture2D(iChannel0, gl_FragCoord.xy / iResolution);
     }
   </script>
-
-  <!--
-    Now we need to calculate uniforms before each frame, and provide them to the shaders.
-   -->
   <script>
     var minDimension = 0;
     var time = 0;
@@ -148,7 +135,8 @@
               <small>Somniac One is a rising star in the world of techno music, a talented female DJ whose name resonates with the essence of electronic exploration. With an enigmatic presence and an ear for innovative sounds, Somniac One crafts dynamic and immersive sets that push the boundaries of traditional techno. Her seamless fusion of driving beats, ethereal melodies, and pulsating rhythms creates an entrancing atmosphere that captivates audiences. With a style that effortlessly bridges the gap between the underground and the avant-garde, Somniac One's performances are an invitation to dive into a world of sonic dreams, where the dance floor becomes a canvas for her artistic expression. Her dedication to pushing the genre forward makes her a dynamic force within the techno scene, promising exhilarating experiences for all who surrender to her beats.</small>
             </li>
             <li>
-              <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1448157313&color=%23000000&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/platform" title="Boiler Room" target="_blank" style="color: #cccccc; text-decoration: none;">Boiler Room</a> · <a href="https://soundcloud.com/platform/hard-dance-182-somniac-one" title="Hard Dance 182: Somniac One" target="_blank" style="color: #cccccc; text-decoration: none;">Hard Dance 182: Somniac One</a>            </li>
+              <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1448157313&color=%23000000&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/platform" title="Boiler Room" target="_blank" style="color: #cccccc; text-decoration: none;">
+              </li>
             <li>
               <a href="#" role="button" class="contrast outline">TICKETS</a>
             </li>
@@ -214,7 +202,7 @@
   </section>
 
   <footer>
-    <p>2023 CLUB_CYBERIA</p>
+    <small>PRIVACY POLICY</small>
   </footer>
 
   <canvas id="shader-web-background" style="width: 100vw; height: 100vh; position: fixed; top: 0px; left: 0px; z-index: -9999;" width="882" height="1340"></canvas>
